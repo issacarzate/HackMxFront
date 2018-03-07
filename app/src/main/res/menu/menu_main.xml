@@ -2,9 +2,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.issac.fitnessandroid.MainActivity">
+    <!-- "Mark Favorite", should appear as action button if possible -->
+
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
+        android:id="@+id/action_account"
+        android:title="Cuenta"
+        app:showAsAction="never"/>
+
+    <!-- Settings, should always be in the overflow -->
+    <item android:id="@+id/action_logout"
+        android:title="Salir"
+        app:showAsAction="never"/>
+
 </menu>

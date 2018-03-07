@@ -1,5 +1,6 @@
 package com.example.issac.fitnessandroid;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -17,7 +18,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,6 +46,16 @@ public class MainActivity extends AppCompatActivity {
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
+
+    private FirebaseAuth mAuth;
+    private DatabaseReference UsersRef;
+    private StorageReference UserProfileImageRef;
+
+
+    String currentUserID;
+    private CircleImageView Profileimage;
+
+
     /**
      * The {@link ViewPager} that will host the section contents.
      */
@@ -38,8 +63,47 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+       // Profileimage = (CircleImageView) findViewById(R.id.action_pic);
+
+        mAuth = FirebaseAuth.getInstance();
+        currentUserID = mAuth.getCurrentUser().getUid();
+        UsersRef = FirebaseDatabase.getInstance().getReference().child("Users");
+
+        UserProfileImageRef = FirebaseStorage.getInstance().getReference().child("Imagenes Perfil");
+        final Toolbar toolbar2 = (Toolbar) findViewById(R.id.toolbar);
+
+        Profileimage = (CircleImageView) findViewById(R.id.imagenPerfil);
+
+        UsersRef.child(currentUserID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    if(dataSnapshot.child("imagenPerfil").exists()) {
+                        Toast.makeText(MainActivity.this, "Si hay imagen", Toast.LENGTH_SHORT).show();
+                        String imagen = dataSnapshot.child("imagenPerfil").getValue().toString();
+                        Picasso.with(MainActivity.this).load(imagen).placeholder(R.drawable.profile).into(Profileimage);
+                        //Picasso.with(MainActivity.this).load(image).placeholder(R.drawable.profile_icon).into(Profileimage);
+
+                    }else{
+                        Toast.makeText(MainActivity.this, "No hay imagen", Toast.LENGTH_SHORT).show();
+                    }
+                    if (dataSnapshot.child("fullname").getValue().toString()!=null){
+                        toolbar2.setTitle(dataSnapshot.child("fullname").getValue().toString());
+                    }else{
+                        Toast.makeText(MainActivity.this, "No hay nombre", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -60,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Pronto podrás compartir tus rutinas", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
@@ -80,14 +144,41 @@ public class MainActivity extends AppCompatActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        switch (item.getItemId()) {
+            case R.id.action_account:
+                SendUserToDetallesActivity();
+                Toast.makeText(this, "Cuenta", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.action_logout:
+                mAuth.signOut();
+                SendUserToLoginActivity();
+                Toast.makeText(this, "Salir", Toast.LENGTH_SHORT).show();
+                return true;
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
         }
+    }
 
-        return super.onOptionsItemSelected(item);
+    private void SendUserToLoginActivity() {
+        Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
+        loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(loginIntent);
+        finish();
+    }
+    private void SendUserToAjustesActivity() {
+        Intent ajustesIntent = new Intent(MainActivity.this, AjustesActivity.class);
+        //ajustesIntent.addFlags(Intent.FL);
+        startActivity(ajustesIntent);
+        finish();
+    }
+    private void SendUserToDetallesActivity() {
+        Intent ajustesIntent = new Intent(MainActivity.this, DetallesActivity.class);
+        ajustesIntent.addFlags(Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+        startActivity(ajustesIntent);
     }
 
     /**
