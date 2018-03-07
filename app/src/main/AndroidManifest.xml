@@ -33,7 +33,8 @@
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
-        <activity android:name=".DetallesActivity"></activity>
+        <activity android:name=".DetallesActivity" />
+        <activity android:name=".ShareActivity"></activity>
     </application>
 
 </manifest>

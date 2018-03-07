@@ -124,8 +124,9 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Pronto podrás compartir tus rutinas", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Nueva rutina", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                SendUserToNewRutina();
             }
         });
 
@@ -177,6 +178,11 @@ public class MainActivity extends AppCompatActivity {
     }
     private void SendUserToDetallesActivity() {
         Intent ajustesIntent = new Intent(MainActivity.this, DetallesActivity.class);
+        ajustesIntent.addFlags(Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+        startActivity(ajustesIntent);
+    }
+    private void SendUserToNewRutina() {
+        Intent ajustesIntent = new Intent(MainActivity.this, ShareActivity.class);
         ajustesIntent.addFlags(Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP);
         startActivity(ajustesIntent);
     }
