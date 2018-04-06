@@ -56,31 +56,30 @@
 
                     <TextView
                         android:id="@+id/text"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:text="Ha subido rutina"
                         android:textColor="@android:color/secondary_text_dark"
                         android:textSize="13dp"
-                        android:textStyle="bold"
-                        />
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/rutina_date"
-                        android:layout_width="wrap_content"
+                        android:layout_width="51dp"
                         android:layout_height="wrap_content"
                         android:text="Fecha"
                         android:textColor="@android:color/black"
                         android:textSize="13dp"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/rutina_time"
-                        android:layout_width="wrap_content"
+                        android:layout_width="64dp"
                         android:layout_height="wrap_content"
                         android:text="Tiempo"
                         android:textColor="@android:color/black"
                         android:textSize="13dp"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 

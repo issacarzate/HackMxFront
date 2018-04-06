@@ -136,10 +136,10 @@ public class ShareActivity extends AppCompatActivity {
 
                     HashMap rutinasMap = new HashMap();
                     rutinasMap.put("uid", current_user_id);
-                    rutinasMap.put("data", guardarFechaActual);
+                    rutinasMap.put("date", guardarFechaActual);
                     rutinasMap.put("tiempo", guardarTiempoActual);
-                    rutinasMap.put("decripcion", Rutina);
-                    rutinasMap.put("rutinaImagem", UrlDescarga);
+                    rutinasMap.put("descripcion", Rutina);
+                    rutinasMap.put("imagenRutina", UrlDescarga);
                     rutinasMap.put("imagenPerfil", imagenUsuario);
                     rutinasMap.put("fullname", nombreUsuario);
 

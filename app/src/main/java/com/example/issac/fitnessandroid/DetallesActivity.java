@@ -71,7 +71,7 @@ public class DetallesActivity extends AppCompatActivity {
             }
         });
         Button ajustar = (Button) findViewById(R.id.setinformation_button);
-        regresar.setOnClickListener(new View.OnClickListener() {
+        ajustar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 SendUserToSettingsActivity();
