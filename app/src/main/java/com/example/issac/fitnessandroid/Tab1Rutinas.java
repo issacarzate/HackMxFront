@@ -41,8 +41,8 @@ public class Tab1Rutinas extends Fragment{
         postList = (RecyclerView) rootView.findViewById(R.id.rvRutinas);
         postList.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-        linearLayoutManager.setReverseLayout(true);
-        linearLayoutManager.setStackFromEnd(true);
+        linearLayoutManager.setReverseLayout(false);
+        linearLayoutManager.setStackFromEnd(false);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         postList.setLayoutManager(linearLayoutManager);
 

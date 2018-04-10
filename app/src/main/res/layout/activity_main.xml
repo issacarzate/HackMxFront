@@ -22,15 +22,22 @@
             android:layout_weight="1"
             android:background="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|enterAlways"
-            app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:title="@string/app_name">
+            app:popupTheme="@style/AppTheme.PopupOverlay">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/imagenPerfil"
-                android:layout_width="120px"
-                android:layout_height="120px"
+                android:layout_width="100px"
+                android:layout_height="100px"
                 android:layout_weight="1"
                 app:srcCompat="@drawable/account" />
+
+            <TextView
+                android:id="@+id/toolbar_title"
+                style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                tools:text="Issac Arzate" />
 
         </android.support.v7.widget.Toolbar>
 

@@ -74,7 +74,14 @@ public class MainActivity extends AppCompatActivity {
         UsersRef = FirebaseDatabase.getInstance().getReference().child("Users");
 
         UserProfileImageRef = FirebaseStorage.getInstance().getReference().child("Imagenes Perfil");
-        final Toolbar toolbar2 = (Toolbar) findViewById(R.id.toolbar);
+        final Toolbar toolbar1 = (Toolbar) findViewById(R.id.toolbar);
+        final TextView toolbar2 = (TextView) toolbar1.findViewById(R.id.toolbar_title);
+        setSupportActionBar(toolbar1);
+        toolbar2.setText(toolbar1.getTitle());
+
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+
 
         Profileimage = (CircleImageView) findViewById(R.id.imagenPerfil);
 
@@ -92,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this, "No hay imagen", Toast.LENGTH_SHORT).show();
                     }
                     if (dataSnapshot.child("fullname").getValue().toString()!=null){
-                        toolbar2.setTitle(dataSnapshot.child("fullname").getValue().toString());
+                        toolbar2.setText(" "+ dataSnapshot.child("fullname").getValue().toString());
                     }else{
                         Toast.makeText(MainActivity.this, "No hay nombre", Toast.LENGTH_SHORT).show();
                     }
@@ -104,9 +111,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
