@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
                     if(dataSnapshot.child("imagenPerfil").exists()) {
-                        Toast.makeText(MainActivity.this, "Si hay imagen", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(MainActivity.this, "Si hay imagen", Toast.LENGTH_SHORT).show();
                         String imagen = dataSnapshot.child("imagenPerfil").getValue().toString();
                         Picasso.with(MainActivity.this).load(imagen).placeholder(R.drawable.profile).into(Profileimage);
                         //Picasso.with(MainActivity.this).load(image).placeholder(R.drawable.profile_icon).into(Profileimage);
