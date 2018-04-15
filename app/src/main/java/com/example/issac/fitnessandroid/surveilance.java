@@ -11,26 +11,21 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.HashMap;
 
-public class ShareActivity extends AppCompatActivity {
+public class surveilance extends AppCompatActivity {
     private ImageButton SelectPostImage;
     private Button UpdatePostButton;
     private EditText PostDescription;
@@ -50,21 +45,19 @@ public class ShareActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_share);
+        setContentView(R.layout.activity_surveilance);
 
         mAuth = FirebaseAuth.getInstance();
         current_user_id = mAuth.getCurrentUser().getUid();
 
-        SelectPostImage = (ImageButton) findViewById(R.id.imagenRutina);
-        UpdatePostButton = (Button) findViewById(R.id.enviarButton);
-        PostDescription = (EditText) findViewById(R.id.rutinaText);
+        SelectPostImage = (ImageButton) findViewById(R.id.surveilanceImg);
+        UpdatePostButton = (Button) findViewById(R.id.sendSurv);
         loadingBar = new ProgressDialog(this);
 
         ImagenRutinaReference = FirebaseStorage.getInstance().getReference();
         RefUsuario = FirebaseDatabase.getInstance().getReference().child("Users");
-        //Creamos nodo rutinas
-        RefRutinas = FirebaseDatabase.getInstance().getReference().child("Rutinas");
-
+        //Creamos nodo surveillance
+        RefRutinas = FirebaseDatabase.getInstance().getReference().child("surveillance");
 
         SelectPostImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,19 +72,15 @@ public class ShareActivity extends AppCompatActivity {
                 ValidarInfo();
             }
         });
-
     }
 
     private void ValidarInfo() {
-        Rutina = PostDescription.getText().toString();
 
         if(ImageUri == null){
             Toast.makeText(this, "Selecciona una imagen valida", Toast.LENGTH_SHORT).show();
-        } else if(TextUtils.isEmpty(Rutina)){
-            Toast.makeText(this, "Escribe una rutina valida", Toast.LENGTH_SHORT).show();
-        } else {
-            loadingBar.setTitle("Añadiendo Rutina");
-            loadingBar.setMessage("Por favor espere mientras subimos su rutina");
+        }else {
+            loadingBar.setTitle("Añadiendo Escena");
+            loadingBar.setMessage("Por favor espere mientras subimos su escena");
             loadingBar.show();
             //If user click on screen this bar wont dissapear until it is completed
             loadingBar.setCanceledOnTouchOutside(true);
@@ -111,68 +100,21 @@ public class ShareActivity extends AppCompatActivity {
 
         enviarNombreRandom = guardarFechaActual + guardarTiempoActual;
 
-        StorageReference filePath = ImagenRutinaReference.child("Imagenes Rutinas").child(ImageUri.getLastPathSegment() + enviarNombreRandom + ".jpg");
+        StorageReference filePath = ImagenRutinaReference.child("Imagenes Escenas").child(ImageUri.getLastPathSegment() + enviarNombreRandom + ".jpg");
 
         filePath.putFile(ImageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                 if(task.isSuccessful()){
                     UrlDescarga = task.getResult().getDownloadUrl().toString();
-                    Toast.makeText(ShareActivity.this, "Imagen Subida con Éxito", Toast.LENGTH_SHORT).show();
-                    GuardandoRutinaFirebase();
+                    Toast.makeText(surveilance.this, "Imagen Subida con Éxito", Toast.LENGTH_SHORT).show();
+                    loadingBar.dismiss();
                 }else{
                     String message = task.getException().getMessage();
-                    Toast.makeText(ShareActivity.this, "Erro: " + message, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(surveilance.this, "Erro: " + message, Toast.LENGTH_SHORT).show();
                 }
             }
         });
-    }
-
-    private void GuardandoRutinaFirebase() {
-        RefUsuario.child(current_user_id).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
-                  String nombreUsuario = dataSnapshot.child("fullname").getValue().toString();
-                  String imagenUsuario = dataSnapshot.child("imagenPerfil").getValue().toString();
-
-                    HashMap rutinasMap = new HashMap();
-                    rutinasMap.put("uid", current_user_id);
-                    rutinasMap.put("date", guardarFechaActual);
-                    rutinasMap.put("tiempo", guardarTiempoActual);
-                    rutinasMap.put("descripcion", Rutina);
-                    rutinasMap.put("imagenRutina", UrlDescarga);
-                    rutinasMap.put("imagenPerfil", imagenUsuario);
-                    rutinasMap.put("fullname", nombreUsuario);
-
-                    //Nombre unico de rutina
-                    RefRutinas.child(current_user_id + enviarNombreRandom).updateChildren(rutinasMap).addOnCompleteListener(new OnCompleteListener() {
-                        @Override
-                        public void onComplete(@NonNull Task task) {
-                            if(task.isSuccessful()){
-                                EnviaAInicio();
-                                Toast.makeText(ShareActivity.this, "Rutina Enviada Exitosamente", Toast.LENGTH_SHORT).show();
-                                loadingBar.dismiss();
-                            }else{
-                                Toast.makeText(ShareActivity.this, "Ocurrio Error", Toast.LENGTH_SHORT).show();
-                                loadingBar.dismiss();
-                            }
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    private void EnviaAInicio() {
-        Intent inicioIntent = new Intent(ShareActivity.this, MainActivity.class);
-        startActivity(inicioIntent);
-        finish();
     }
 
     private void AbrirGaleria() {
@@ -192,4 +134,5 @@ public class ShareActivity extends AppCompatActivity {
 
         }
     }
+
 }

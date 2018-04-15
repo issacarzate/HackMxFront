@@ -19,6 +19,7 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    <color name="lightB">#d1ebff</color>
+    <color name="lightB">#e1e1e1</color>
     <color name="lightW">#ffffff</color>
+    <string name="title_activity_room_pic">RoomPic</string>
 </resources>

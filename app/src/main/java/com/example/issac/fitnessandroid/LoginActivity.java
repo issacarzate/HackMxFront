@@ -123,7 +123,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void permitirAcceso() {
-        Intent intentoPrincipal = new Intent(LoginActivity.this, MainActivity.class);
+        Intent intentoPrincipal = new Intent(LoginActivity.this, SelectTask.class);
         intentoPrincipal.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intentoPrincipal);
         finish();
